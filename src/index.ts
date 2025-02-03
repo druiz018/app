@@ -1,12 +1,19 @@
-import express from "express";
-import homeRoute from "./routes/home.router";
+import express, { response } from 'express';
+import cors from 'cors';
+import connectDB from './config/db';
+import userRoutes from './routes/userRoutes';
+const app = express();
+const PORT = process.env.PORT || 3000;
+// Middleware
+app.use(cors());
+app.use(express.json());
+// Conexión a MongoDB
+connectDB();
 
-const app = express()
+// Rutas
+app.use('/api', userRoutes);
 
-app.get('/', homeRoute)
-
-const PORT = process.env.PORT || 3000
-
+// Iniciar servidor
 app.listen(PORT, () => {
-  console.log('Servidor corriendo por http://localhost:',PORT)
-})
+  console.log(`Server running on http://localhost:${PORT}`);
+});
